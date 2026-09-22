@@ -43,6 +43,8 @@ date_price <- as.Date(Google_Stock_Prices$Date, format = "%m/%d/%y")
 plot(type = "l", x = date_price, y = close_price, xlab = "Date", ylab = "Close Price", lwd = 2, main = "Closing Price vs Time of GOOGL")
 ```
 
+**(5 points)** Construct the vector of simple daily returns over the last year. Provide a visualization of the returns. What can you say about the characteristics of the distribution based on the above plot?
+
 The **simple daily return** of the stock over a day indexed by $t$ is defined as 
 ```{r}
 n<-length(close_price)
@@ -54,9 +56,20 @@ hist(returns_simple, xlab = "Daily Return in %", ylab = "Frequency", main = "His
 
 summary(returns_simple)
 ```
-**(5 points)** Construct the vector of simple daily returns over the last year. Provide a visualization of the returns. What can you say about the characteristics of the distribution based on the above plot?
+The values for returns settle around a central tendency and appear to be approximately normally distributed.
 
 **(10 points)** Fit the normal distribution to the above returns. Superimpose the appropriate graph for your model onto the appropriate graph of the data to convince your reader that your model is valid.
+```{r}
+mean_returns = mean(returns_simple)
+sd_returns = sd(returns_simple)
+Normalized_Returns <- dnorm(returns_simple, mean = mean_returns, sd=sd_returns)
+hist(returns_simple, probability = TRUE, xlab = "Daily Return", ylab = "Density", main = "Normalized Simple Daily Returns")
+
+x_vals <- seq(min(returns_simple), max(returns_simple), length.out = 300)
+lines( x_vals, dnorm(x_vals, mean = mean_returns, sd = sd_returns), col = "red", lwd = 2)
+
+
+```
 
 **(15 points)** You will have to install a package to solve this part of your project. First, run the following in your console: 
 
