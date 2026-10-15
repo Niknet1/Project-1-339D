@@ -1,0 +1,87 @@
+---
+title: 'Project #2'
+author: "Sam Marino,_______________________________"
+date: "`10/19/2026`"
+output:
+  html_document:
+    df_print: paged
+urlcolor: blue
+---
+<!-- The author of this template is Dr. Gordan Zitkovic.-->
+<!-- The code chunk below contains some settings that will  -->
+<!-- make your R code look better in the output pdf file.  -->
+<!-- If you are curious about what each option below does, -->
+<!-- go to https://yihui.org/knitr/options/ -->
+<!-- If not, feel free to disregard everything ...  -->
+```{r echo=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.align="center",
+  fig.pos="t",
+  strip.white = TRUE
+)
+```
+<!-- ... down to here. -->
+
+---
+
+# Forwards and futures. 
+
+## Problem #1 (25 points)
+### The Dow index and Dow futures
+Please, in no particular order read the Wikipedia entry about *futures contracts* and listen to the fun and educational episode of *Planet money* about credit risk in cafeteria futures. Both are linked below:
+
+[Wikipedia](https://en.wikipedia.org/wiki/Futures_contract): Futures
+
+[Planet money](https://www.npr.org/sections/money/2016/01/06/462149561/episode-15-delicious-cake-futures): Delicious cake futures
+
+**(10 points)** Provide the definitions of the forward contract and the futures contract. Then, highlight at least two similarities and at least two differences between the two. 
+
+The files "dow.csv" and "dow-futures.csv" contain index prices and the futures prices for delivery on a particular date in the future. 
+
+**(5 points)**
+Import the data into a data frame (or two?). Draw the time-plot of the evolution of the closing index prices and the futures prices on the same coordinate system. You do **not** need to put the calendar days on the horizontal axis, but you **do** need to label your axes and give your time-plot a title indicating the dates. Make sure that you plot the two trajectories in **different** colors indicating in the text which color corresponds to which company. 
+
+Here is a link to a straightforward tutorial which will help you accomplish the above neatly: 
+
+[Timeline plotting](https://statisticsglobe.com/draw-multiple-time-series-in-same-plot-in-r) 
+
+**(10 points)**
+What do you notice when you compare the timeplots? Which of the **formulae** for calculating futures prices you encountered on the Wikipedia entry come in handy?
+
+# Call price properties
+
+## Problem #2 (25 points)
+### Apple calls
+The file "apple-calls.csv" contains call prices observed on February 14th for European call options on the stocks of Apple Inc with expiry on May 19th and with varying strike prices. 
+
+**(5 points)**
+Import the data into a data frame. Create a line plot of the mid price (defined as the midpoint between the bid and the ask price) as it depends on the strike. 
+
+**(5 points)**
+What do you notice about the monotonicity and convexity of the above curve? 
+
+**(15 points)**
+**Prove** that the same conclusions regarding the monotonicity and convexity of the call prices with respect to the strike must hold in general **under the no arbitrage assumption**. 
+
+# Put-call parity
+
+## Problem #3 (25 points)
+**(5 points)**
+Using put-call parity, find the formula for the interest rate if all other ingredients are known. 
+
+**(5 points)** 
+Based on the above, what can you say about the interest rates $r$ you expect to obtain for varying values of the strike price? Bear in mind the **standing assumptions** we made in the beginning of the semester. 
+
+**(10 points)**
+Based on the data set "apple-parity.csv", calculate the continuously compounded, risk-free interest rate for all the strike prices given. Be careful about how you use the *bid* and *ask/offer* prices of the options. Set $T=0.25$. Plot the values of the interest rate you obtain as they depend on the strike prices. 
+
+**(5 points)**
+What do you notice about the above plot? Does it or does it not agree with your prediction from the second question in the problem? Substantiate your answer. 
+
+## Problem #4 (25 points)
+To what do you attribute the discrepancies you observed in the previous problem? Think about it a bit and note your ideas. Then, consult the paper by *Brenner* and *Galai* uploaded into Canvas (under *Files* in the folder *articles*). Provide at least **four** substantiated reasons. 
+
+*Note that this question is worth a quarter of your score for this project! A few lines of your musings will give you hardly any credit at all.*
+
+
