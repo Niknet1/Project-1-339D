@@ -122,21 +122,121 @@ What do you notice about the monotonicity and convexity of the above curve?
 Let the continuously compounded, risk-free interest rate be $0.05$. 
 
 Consider a stock whose current price is \$80 and whose volatility is $0.2$. We will be pricing a variety of options using a *forward binomial tree*. 
+```{r}
+r= 0.05
+v=0.2
+S0=80
+
+```
+
 
 **(5 points)** 
 Price a one-year, \$85-strike European call option analytically using a $100-$period binomial tree. 
 
+*Solution*
+
+```{r}
+
+n=100
+T=1
+h=T/n
+u = exp(r*h+v*sqrt(h))
+d = exp(r*h-v*sqrt(h))
+p = (exp(r*h)-d)/(u-d)
+
+K=85
+
+x=n:0
+ST=S0*u^x*d^(n-x)
+vT1 = pmax(ST-K,0)
+probs=dbinom(x,size=n,prob=p)
+RNPayoffs=sum(vT1*probs)
+(v.c=exp(-r*T)*RNPayoffs)
+
+```
+The theoretically computed price of an \$85-strike European call option using a $100-$period binomial tree is about $5.997075
+
 **(5 points)** 
-Price a one-year, \$85-strike European call option using *Monte Carlo* with 10000 simulations with a $100-$period binomial tree. 
+Price a one-year, \$85-strike European call option using *Monte Carlo* with 10000 simulations with a $100-$period binomial tree.
+
+*Solution*
+```{r}
+n.sim=10000
+
+x = rbinom(n.sim, n, p)
+
+s.T=S0*u^x*d^(n-x)
+
+v.T=pmax(s.T-K,0)
+
+v.bar=mean(v.T)
+
+(v.mc=exp(-r*T)*v.bar)
+```
+
+The output of the monte carlo expectation is printed above. 
 
 **(5 points)** 
 Price a half-year, \$78-strike European put option analytically using a $100-$period binomial tree. 
 
+*Solution*
+
+```{r}
+
+n=100
+T=0.5
+h=T/n
+u = exp(r*h+v*sqrt(h))
+d = exp(r*h-v*sqrt(h))
+p = (exp(r*h)-d)/(u-d)
+
+K=78
+
+x=n:0
+ST=S0*u^x*d^(n-x)
+vT1 = pmax(K-ST,0)
+probs=dbinom(x,size=n,prob=p)
+RNPayoffs=sum(vT1*probs)
+(v.c=exp(-r*T)*RNPayoffs)
+```
+The theoretically computed price of a \$78-strike European put option using a $100-$period binomial tree is about $2.714835
+
+
 **(5 points)** 
-Price a half-year, \$78-strike European put option using *Monte Carlo* with 10000 simulations with a $100-$period binomial tree. 
+Price a half-year, \$78-strike European put option using *Monte Carlo* with 10000 simulations with a $100-$period binomial tree.
+
+*Solution*
+
+```{r}
+n.sim=10000
+#create simulated distribution
+x = rbinom(n.sim, n, p)
+
+#simulated stock prices sample
+s.T=S0*u^x*d^(n-x)
+
+#payoff sample
+v.T=pmax(K-s.T,0)
+
+#expected payoff
+v.bar=mean(v.T)
+
+#Price aka discounted expected payoff
+(v.mc=exp(-r*T)*v.bar)
+```
+
+The output of the monte carlo expectation is printed above. 
 
 **(5 points)** 
 Comment on the accuracy of the *Monte Carlo* method. Which theorem from probability is useful here?
+
+*Answer*
+
+The Monte Carlo method with 10000 simulations essentially uses a pseudo-random approximately normal sample of size 10000. The estimated price computed by the monte carlo method is the sample mean of this collected sample, which should eventually converge to the theoretically calculated price. With a sample size of 10000, the standard error is equal to $e^{(-rv)}/100$ where v = volatility and r = CCRFIR. The error is fairly small due to the large sample size, thus making it a pretty accurate estimate, and the simulated values I computed were also not too far off from the theoretical value.
+
+The Central Limit Theorem from probability is what explains the Monte Carlo approach's accuracy. As the sample size (i.e. number of simulations) increases, the expected value calculated by the Monte Carlo model converges to the theoretical mean as the sample variance decreases. The theorem states that a large enough sample of N independent, identically distributed random variables, the sample mean is normally distributed with expected value equal to the theoretical expectation, and a variance equal to the theoretical variance divided by sample size. This means that the sample size is a denominator of the sample variance, and thus as it increases (in the form of doing more simulations), the sample varies less from the expected value of the distribution, which in this case is the theoretical expectation of payoff. 
+
+
 
 
 
